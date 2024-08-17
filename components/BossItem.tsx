@@ -88,7 +88,7 @@ const BossItem: React.FC<Props> = ({ boss, onBossValueChange }) => {
             <Text className={importantInfo}>
               Description
             </Text>
-            <Text className='mb-3 text-[#b4b2b0]'>{boss.description}</Text>
+            <Text className='mb-3 text-[#b4b2b0] text-center'>{boss.description}</Text>
             <Text className={importantInfo}>
               Map 
             </Text>

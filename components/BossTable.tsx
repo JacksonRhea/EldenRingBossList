@@ -4,12 +4,14 @@ import { Pressable, ScrollView, View, Text } from "react-native";
 import BossItem from "./BossItem";
 import { bosses } from "../constants/BossInfo";
 import { SaveData, LoadData } from "../services/storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Props {
   value: any;
+  onBossCountChange: (count: number) => void
 }
 
-const BossTable: React.FC<Props> = ({ value }) => {
+const BossTable: React.FC<Props> = ({ value, onBossCountChange }) => {
   const [bossList, setBossList] = useState<Record<string, Boss> | null>(null);
   const [updatedItem, setUpdatedItem] = useState(false);
   const [bossCount, setBossCount] = useState(0);
@@ -20,7 +22,7 @@ const BossTable: React.FC<Props> = ({ value }) => {
       if (savedBosses) {
         setBossList(savedBosses);
         const bossArray = Object.entries(savedBosses);
-        setBossCount(bossArray.filter(x => x[1].completed).length)
+        onBossCountChange(bossArray.filter(x => x[1].completed).length)
       } else {
         setBossList(bosses);
       }
@@ -73,7 +75,7 @@ const BossTable: React.FC<Props> = ({ value }) => {
 
       setBossList(sortedBosses);
       SaveData("Boss Data", bossList);
-      setBossCount(bossArray.filter(x => x[1].completed).length)
+      onBossCountChange(bossArray.filter(x => x[1].completed).length)
     }
   }, [value, bosses, updatedItem]);
 
@@ -97,13 +99,6 @@ const BossTable: React.FC<Props> = ({ value }) => {
 
   return (
     <View>
-        <View>
-          <View className='absolute inset-0 bg-black opacity-80 rounded-xl w-full h-full'>
-          </View>
-          <Text className='items-center underline text-2xl font-bold text-center m-2 text-important'>
-            {bossCount}/165
-          </Text>
-        </View>
         {bossList &&
           Object.values(bossList).map((boss, index) => (
             <BossItem
