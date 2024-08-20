@@ -70,7 +70,7 @@ export default function ListScreen() {
         y: 0,
       });
     }
-  }, [value]);
+  }, [value, filterCompleted]);
 
   useEffect(() => {
     const loadBossList = async () => {
