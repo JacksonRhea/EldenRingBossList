@@ -72,7 +72,7 @@ const BossItem: React.FC<Props> = ({ boss, onBossValueChange }) => {
             <Pressable onPress={HandleMoreInfo}>
               <Image 
                 className='h-16 w-16 rounded-xl'
-                source={(require("../assets/map.png"))} 
+                source={(require("../assets/map.webp"))} 
               />
             </Pressable>
             <CheckBox 

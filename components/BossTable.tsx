@@ -8,99 +8,101 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Props {
   value: any;
+  bossList: Record<string, Boss> | null
+  filterCompleted: boolean
   onBossCountChange: (count: number) => void
 }
 
-const BossTable: React.FC<Props> = ({ value, onBossCountChange }) => {
-  const [bossList, setBossList] = useState<Record<string, Boss> | null>(null);
+const BossTable: React.FC<Props> = ({ value, bossList, filterCompleted, onBossCountChange }) => {
+  const [clonedBossList, setClonedBossList] = useState<Record<string, Boss> | null>(bossList);
   const [updatedItem, setUpdatedItem] = useState(false);
-  const [bossCount, setBossCount] = useState(0);
 
   useEffect(() => {
-    const loadBossList = async () => {
-      const savedBosses = await LoadData<Record<string, Boss>>("Boss Data");
-      if (savedBosses) {
-        setBossList(savedBosses);
-        const bossArray = Object.entries(savedBosses);
-        onBossCountChange(bossArray.filter(x => x[1].completed).length)
-      } else {
-        setBossList(bosses);
-      }
-    };
-    loadBossList();
-  }, []);
-
-  useEffect(() => {
-    if (bossList !== null) {
-      const bossArray = Object.entries(bossList);
-
-      bossArray.sort(([, a], [, b]) => {
-        // First, sort by location based on the provided value
-        const aLocationIncludesValue = value
-          ? a.location.includes(value)
-          : false;
-        const bLocationIncludesValue = value
-          ? b.location.includes(value)
-          : false;
-
-        if (aLocationIncludesValue && !bLocationIncludesValue) {
-          return -1;
-        } else if (!aLocationIncludesValue && bLocationIncludesValue) {
-          return 1;
-        }
-
-        // If both or neither include the location value, sort by location alphabetically
-        const locationCompare = a.location.localeCompare(b.location);
-
-        if (locationCompare !== 0) {
+    if (clonedBossList !== null) {
+      const bossArray = Object.entries(clonedBossList);
+      
+      {!filterCompleted ? 
+        bossArray.sort(([, a], [, b]) => {
+          // First, sort by location based on the provided value
+          const aLocationIncludesValue = value
+            ? a.location.includes(value)
+            : false;
+          const bLocationIncludesValue = value
+            ? b.location.includes(value)
+            : false;
+  
+          if (aLocationIncludesValue && !bLocationIncludesValue) {
+            return -1;
+          } else if (!aLocationIncludesValue && bLocationIncludesValue) {
+            return 1;
+          }
+  
+          // If both or neither include the location value, sort by location alphabetically
+          const locationCompare = a.location.localeCompare(b.location);
+  
+          if (locationCompare !== 0) {
+            if (a.completed && !b.completed) {
+              return 1;
+            } else if (!a.completed && b.completed) {
+              return -1;
+            }
+          }
+  
+          // If locations are the same, sort by completion status (move completed to bottom)
           if (a.completed && !b.completed) {
             return 1;
           } else if (!a.completed && b.completed) {
             return -1;
           }
-        }
+  
+          // If both are completed or both are not completed, keep their order
+          return 0;
+        }) : 
 
-        // If locations are the same, sort by completion status (move completed to bottom)
-        if (a.completed && !b.completed) {
-          return 1;
-        } else if (!a.completed && b.completed) {
-          return -1;
-        }
+        bossArray.sort(([, a], [, b]) => {
+          //Sort by completed
+          if (a.completed && !b.completed) {
+            return -1
+          } else if (!a.completed && b.completed) {
+            return 1;
+          }
 
-        // If both are completed or both are not completed, keep their order
-        return 0;
-      });
+          return 0;
+         
+        });
+      }
 
       const sortedBosses = Object.fromEntries(bossArray);
 
-      setBossList(sortedBosses);
-      SaveData("Boss Data", bossList);
-      onBossCountChange(bossArray.filter(x => x[1].completed).length)
+      setClonedBossList(sortedBosses);
+      SaveData("Boss Data", clonedBossList);
     }
-  }, [value, bosses, updatedItem]);
+  }, [value, bosses, updatedItem, filterCompleted]);
 
   const onBossValueChange = (changedBoss: Boss) => {
-    setBossList((bossList) => {
-      if (bossList) {
-        const bossArray = Object.entries(bossList);
+    setClonedBossList((clonedBossList) => {
+      if (clonedBossList) {
+        const bossArray = Object.entries(clonedBossList);
 
         let index = bossArray.find(
           ([, boss]) => boss.id == changedBoss.id
         )?.[0];
 
-        if (index) bossList[index].completed = changedBoss.completed;
+        if (index) clonedBossList[index].completed = changedBoss.completed;
+
+        onBossCountChange(bossArray.filter(x => x[1].completed).length)
         
-        return bossList;
+        return clonedBossList;
       }
-      return bossList;
+      return clonedBossList;
     });
     setUpdatedItem(!updatedItem);
   };
 
   return (
     <View>
-        {bossList &&
-          Object.values(bossList).map((boss, index) => (
+        {clonedBossList &&
+          Object.values(clonedBossList).map((boss, index) => (
             <BossItem
               key={boss.id}
               boss={boss}

@@ -8,7 +8,7 @@ export default function App() {
   const backgroundWrapper = 'absolute inset-0 bg-black opacity-80 rounded-xl w-full h-full';
 
   return (
-    <ImageBackground source={require("../../assets/logo.png")}>
+    <ImageBackground source={require("../../assets/logo.jpg")}>
       <SafeAreaView>
       <ScrollView className="self-center ml-3 mr-3 border-black rounded-xl">
         <View className={backgroundWrapper} />
@@ -22,7 +22,7 @@ export default function App() {
           <Text className={importantInfo}>General Information</Text>
           <Text className={leastImportant}>
             1. All info was gotten by hand via Elden Ring wiki, if anything is
-            wrong please let me know via the "i" in the top right of this page to leave a comment.
+            wrong please let me know via the "i" in the top right of this page and leave a comment.
             {"\n"}
             {"\n"}
             2. Clicking the map icon on the left opens up a more detailed
@@ -34,8 +34,7 @@ export default function App() {
             filtered, the boss moves to the bottom of the filtered location.
             {"\n"}
             {"\n"}
-            4. I may update this to include items, graces, etc. not entirely
-            sure though, as this took long enough as is.{"\n"}
+            4. Clicking on the boss counter will filter by the completed bosses. Just select another location if you wish to go back to how it was.{"\n"}
             {"\n"}
             5. Huge thank you to Elden Ring Wiki for providing the info for
             this, all credits goes to them for this information.{"\n"}

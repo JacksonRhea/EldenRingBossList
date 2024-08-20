@@ -13,7 +13,7 @@ export default function ModalScreen() {
   }
 
   return (
-    <ImageBackground source={require("../assets/modal.png")} className='flex-1'>
+    <ImageBackground source={require("../assets/modal.jpg")} className='flex-1'>
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView>
         <View className='absolute inset-0 bg-black opacity-80 rounded-xl w-[95%] h-full self-center mt-12' />
