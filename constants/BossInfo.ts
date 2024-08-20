@@ -806,7 +806,7 @@ export const bosses: Record<string, Boss> = {
   magmaWyrmGaelTunnel: {
     id: 63,
     name: "Magma Wyrm",
-    image: "../assets/boss-images/magma_wyrm.png",
+    image: "../assets/boss-images/magma-wyrm.png",
     description: "Magma Wyrm is a Field Boss in Elden Ring. Magma Wyrms were once human, but were transformed into lesser dragons for the sin of Dragon Communion. These are optional bosses as players are not required to defeat them to advance in Elden Ring.",
     location: "Gael Tunnel, Caelid",
     runeRewards: "7500",
@@ -1607,7 +1607,7 @@ export const bosses: Record<string, Boss> = {
   magmaWyrmFortLaiedd: {
     id: 125,
     name: "Magma Wyrm",
-    image: "../assets/boss-images/magma_wyrm.png",
+    image: "../assets/boss-images/magma-wyrm.png",
     description: "Magma Wyrm is a Field Boss in Elden Ring. Magma Wyrms were once human, but were transformed into lesser dragons for the sin of Dragon Communion. These are optional bosses as players are not required to defeat them to advance in Elden Ring.",
     location: "Fort Laiedd, Mt. Gelmir",
     runeRewards: "19000",

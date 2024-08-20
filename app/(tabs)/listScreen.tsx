@@ -1,20 +1,21 @@
 import { ScrollView, StyleSheet, Text, View, ImageBackground, } from "react-native";
 import BossTable from "../../components/BossTable";
 import DropDownPicker from "react-native-dropdown-picker";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ListScreen() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [bossCount, setBossCount] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
   const [items, setItems] = useState([
     { label: "Limgrave", value: "Limgrave" },
     { label: "Weeping Peninsula", value: "Weeping" },
     { label: "Liurnia of the Lakes", value: "Liurnia" },
     { label: "Caelid", value: "Caelid" },
     { label: "Greyoll's Dragonbarrow", value: "Dragonbarrow" },
-    { label: "Altus Plateau", value: "Altus" },
+    { label: "Altus Plateau", value: "Plateau" },
     { label: "Mt. Gelmir", value: "Gelmir" },
     { label: "Capital Outskirts", value: "Outskirts" },
     { label: "Leyndell, Royal Capital", value: "Royal" },
@@ -45,6 +46,13 @@ export default function ListScreen() {
     setBossCount(bossCount);
   }, [bossCount])
 
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        y: 0
+      })
+    }
+  }, [value]); 
   return (
     <ImageBackground source={require("../../assets/logo.png")}>
       <SafeAreaView>
@@ -77,8 +85,8 @@ export default function ListScreen() {
         </Text>
       </View>
 
-      <ScrollView className="w-11/12 self-center border-black rounded-xl mb-auto">
-        <BossTable value={value} onBossCountChange={setBossCount}></BossTable>
+      <ScrollView ref={scrollViewRef} className="w-11/12 self-center border-black rounded-xl mb-auto">
+        <BossTable value={value} onBossCountChange={setBossCount} ></BossTable>
       </ScrollView>
       </SafeAreaView>
     </ImageBackground>
